@@ -18,19 +18,26 @@ def selectNewestDir(dirpattern):
 	assert dirs
 	# TODO...
 	return dirs[-1]
+	
+
+# Running in simulator
+SIM = True
 
 if True: # iOS
-	DEVROOT = "/Developer/Platforms/iPhoneOS.platform/Developer"
+	PLATFORM = 'iPhoneSimulator' if SIM else 'iPhoneOS'
+	DEVROOT = "/Developer/Platforms/"+PLATFORM+".platform/Developer"
 	#SDKROOT = DEVROOT + "/SDKs/iPhoneOS5.0.sdk"
-	SDKROOT = selectNewestDir("/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS*.sdk")
+	SDKROOT = selectNewestDir("/Applications/Xcode.app/Contents/Developer/Platforms/"+PLATFORM+".platform/Developer/SDKs/"+PLATFORM+"*.sdk")
+	STATIC_LIB = 'iOS-static-libs/%s-4.3/' % ('iPhoneSimulator' if SIM else "iPhoneOS-V7")
 	assert os.path.exists(DEVROOT)
 	assert os.path.exists(SDKROOT)
+	assert os.path.exists(STATIC_LIB)
 
 	# Clang within the Xcode toolchain is buggy?
 	# See https://github.com/albertz/playground/blob/master/test-int-cmp.c .
 	#CC = DEVROOT + "/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
 	#CC = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-	CC = "/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/cc"
+	CC = "/Developer/Platforms/"+PLATFORM+".platform/Developer/usr/bin/cc"
 	LD = DEVROOT + "/usr/bin/ld"
 	LIBTOOL = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool"
 	assert os.path.exists(CC)
@@ -44,8 +51,15 @@ if True: # iOS
 		#"-I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/3.1/include",
 		"-pipe",
 		#"-no-cpp-precomp",
-		"-arch", "armv6",
-		"-arch", "armv7",
+		]
+	if SIM:
+		CFLAGS += ["-arch", "i386",]
+	else:
+		CFLAGS += [
+			"-arch", "armv6",
+			"-arch", "armv7",
+			]
+	CFLAGS += [
 		"-miphoneos-version-min=4.3",
 		"-mthumb",
 		"-g",
@@ -54,7 +68,7 @@ if True: # iOS
 		#"-Wno-trigraphs",
 		#"-fpascal-strings",
 		"-O0",
-		"-IiOS-static-libs/iPhoneOS-V7-4.3/include/",
+		"-I%s/include/" % STATIC_LIB,
 		]
 	LDFLAGS += [
 		"-arch", "armv6",
@@ -235,7 +249,7 @@ def compile():
 			 #"-arch_only", "armv7",
 			 "-o", "libpython.a"] +
 			map(lambda f: "build/" + f, ofiles) +
-			map(lambda f: "iOS-static-libs/iPhoneOS-V7-4.3/lib/" + f, [
+			map(lambda f: ("%s/lib/" % STATIC_LIB) + f, [
 				"libssl.a",
 				"libcrypto.a",
 				"libgcrypt.a",
