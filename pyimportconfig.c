@@ -38,6 +38,7 @@ extern void initzlib(void);
 extern void initselect(void);
 extern void initsignal(void);
 extern void initfcntl(void);
+extern void initunicodedata(void);
 
 #ifdef WITH_PYCRYPTO
 extern void init_PyCrypto(void);
@@ -78,6 +79,7 @@ struct _inittab _PyImport_Inittab[] = {
 	{"select", initselect},
 	{"signal", initsignal},
 	{"fcntl", initfcntl},
+	{"unicodedata", initunicodedata},
 	
 /*
     {"_ast", init_ast},

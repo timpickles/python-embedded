@@ -172,6 +172,7 @@ modFiles = \
 			"selectmodule.c",
 			"signalmodule.c",
 			"fcntlmodule.c",
+			"unicodedata.c",
 			])) | \
 	set(glob(PythonDir + "/Modules/_io/*.c"))
 
@@ -186,31 +187,13 @@ parserFiles = \
 	set(glob(PythonDir + "/Parser/*.c")) - \
 	set(glob(PythonDir + "/Parser/*pgen*.c"))
 
-pycryptoFiles = \
-	set(glob("pycrypto/src/*.c")) - \
-	set(glob("pycrypto/src/*template.c")) - \
-	set(glob("pycrypto/src/cast*.c")) - \
-	set(glob("pycrypto/src/_fastmath.c")) # for now. it needs libgmp
-
-pycryptoFiles = map(lambda f: "pycrypto/src/" + f,
-	[
-		"_counter.c",
-		"AES.c",
-		"strxor.c",
-	]) + \
-	["pycryptoutils/cryptomodule.c"]
 
 compileOpts = CFLAGS + [
 	"-Ipylib",
 	"-I" + PythonDir + "/Include",
-	"-DWITH_PYCRYPTO",
+	# "-DWITH_PYCRYPTO",
 ]
 
-compilePycryptoOpts = compileOpts + [
-	"-Ipycryptoutils",
-	"-Ipycrypto/src/libtom",
-	"-std=c99",
-]
 
 def execCmd(cmd):
 	cmdFlat = " ".join(cmd)
@@ -235,15 +218,13 @@ def compile():
 	ofiles = []
 	for f in list(baseFiles) + list(modFiles) + list(objFiels) + list(parserFiles):
 		ofiles += [compilePyFile(f, compileOpts)]
-	for f in list(pycryptoFiles):
-		ofiles += [compilePycryptoFile(f)]
 	
 	if buildExec:
 		execCmd([CC] + LDFLAGS + map(lambda f: "build/" + f, ofiles) + ["-o", "python"])
 	else:
 		#execCmd([LD] + LDFLAGS + map(lambda f: "build/" + f, ofiles) +
 		#	["-o", "libpython.a"])
-		#execCmd(["ar", "rcs", "libpython.a"] + map(lambda f: "build/" + f, ofiles))
+		# execCmd(["ar", "rcs", "libpython.a"] + map(lambda f: "build/" + f, ofiles))
 		execCmd(
 			[LIBTOOL, "-static", "-syslibroot", SDKROOT,
 			 #"-arch_only", "armv7",
