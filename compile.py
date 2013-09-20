@@ -25,10 +25,10 @@ SIM = True
 
 if True: # iOS
 	PLATFORM = 'iPhoneSimulator' if SIM else 'iPhoneOS'
-	DEVROOT = "/Developer/Platforms/"+PLATFORM+".platform/Developer"
+	DEVROOT = "/Applications/Xcode.app/Contents/Developer/Platforms/"+PLATFORM+".platform/Developer"
 	#SDKROOT = DEVROOT + "/SDKs/iPhoneOS5.0.sdk"
-	SDKROOT = selectNewestDir("/Applications/Xcode.app/Contents/Developer/Platforms/"+PLATFORM+".platform/Developer/SDKs/"+PLATFORM+"*.sdk")
-	STATIC_LIB = 'iOS-static-libs/%s-4.3/' % ('iPhoneSimulator' if SIM else "iPhoneOS-V7")
+	SDKROOT = selectNewestDir(DEVROOT + "/SDKs/"+PLATFORM+"*.sdk")
+	STATIC_LIB = 'iOS-static-libs/%s-4.3' % ('iPhoneSimulator' if SIM else "iPhoneOS-V7")
 	assert os.path.exists(DEVROOT)
 	assert os.path.exists(SDKROOT)
 	assert os.path.exists(STATIC_LIB)
@@ -37,7 +37,7 @@ if True: # iOS
 	# See https://github.com/albertz/playground/blob/master/test-int-cmp.c .
 	#CC = DEVROOT + "/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
 	#CC = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-	CC = "/Developer/Platforms/"+PLATFORM+".platform/Developer/usr/bin/cc"
+	CC = DEVROOT + "/usr/bin/llvm-gcc"
 	LD = DEVROOT + "/usr/bin/ld"
 	LIBTOOL = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool"
 	assert os.path.exists(CC)
