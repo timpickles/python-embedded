@@ -37,7 +37,7 @@ if True: # iOS
 	# See https://github.com/albertz/playground/blob/master/test-int-cmp.c .
 	#CC = DEVROOT + "/usr/bin/arm-apple-darwin10-llvm-gcc-4.2"
 	#CC = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang"
-	CC = DEVROOT + "/usr/bin/llvm-gcc"
+	CC = DEVROOT + "/usr/bin/gcc"
 	LD = DEVROOT + "/usr/bin/ld"
 	LIBTOOL = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool"
 	assert os.path.exists(CC)
