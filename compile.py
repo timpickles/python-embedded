@@ -174,6 +174,7 @@ modFiles = \
 			"signalmodule.c",
 			"fcntlmodule.c",
 			"unicodedata.c",
+			"pwdmodule.c",
 			])) | \
 	set(glob(PythonDir + "/Modules/_io/*.c"))
 

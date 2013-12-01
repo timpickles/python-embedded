@@ -39,6 +39,7 @@ extern void initselect(void);
 extern void initsignal(void);
 extern void initfcntl(void);
 extern void initunicodedata(void);
+extern void initpwd(void);
 
 #ifdef WITH_PYCRYPTO
 extern void init_PyCrypto(void);
@@ -71,16 +72,17 @@ struct _inittab _PyImport_Inittab[] = {
 #ifdef WITH_THREAD
     {"thread", initthread},
 #endif
-	{"binascii", initbinascii},
-	{"_random", init_random},
-	{"_socket", init_socket},
-	{"_ssl", init_ssl},
-	{"zlib", initzlib},
-	{"select", initselect},
-	{"signal", initsignal},
-	{"fcntl", initfcntl},
-	{"unicodedata", initunicodedata},
-	
+    {"binascii", initbinascii},
+    {"_random", init_random},
+    {"_socket", init_socket},
+    {"_ssl", init_ssl},
+    {"zlib", initzlib},
+    {"select", initselect},
+    {"signal", initsignal},
+    {"fcntl", initfcntl},
+    {"unicodedata", initunicodedata},
+    {"pwd", initpwd},
+
 /*
     {"_ast", init_ast},
     {"cmath", initcmath},
