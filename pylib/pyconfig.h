@@ -1289,3 +1289,8 @@
 /*
 #define SIZEOF_SHORT sizeof(short)
 */
+
+
+// Custom defines
+#define HAVE_UINT32_T
+#define HAVE_INT32_T
