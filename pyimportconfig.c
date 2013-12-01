@@ -1,6 +1,5 @@
 #include "Python.h"
 
-extern void _PyWarnings_Init(void);
 extern void PyMarshal_Init(void);
 extern void initarray(void);
 extern void initimp(void);

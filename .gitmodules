@@ -1,7 +1,7 @@
 [submodule "CPython"]
 	path = CPython
 	url=https://github.com/python/cpython.git
-	branch = origin/2.7
+	branch = origin/3.3
 
 [submodule "pycrypto"]
 	path = pycrypto
